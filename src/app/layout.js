@@ -1,5 +1,5 @@
 import './globals.css'
-import {Providers} from "./providers";
+import { ClerkProvider } from '@clerk/nextjs'
 
 export const metadata = {
   title: 'Kokua | Pharma',
@@ -9,8 +9,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body>{children}</body>
     </html>
+    </ClerkProvider>
   )
 }

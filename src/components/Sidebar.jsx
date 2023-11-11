@@ -1,19 +1,22 @@
 import Image from "next/image";
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Link from "next/link";
-import SchoolIcon from '@mui/icons-material/School';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import { auth, currentUser } from "@clerk/nextjs";
+import SignOutButton from "./SignOutButton"; 
+import {
+    ClerkProvider,
+    SignedIn,
+    SignedOut,
+    SignInButton,
+    UserButton,
+  } from "@clerk/nextjs";
 
+export default async function Sidebar() {
 
-export default function Sidebar() {
+    const user = await currentUser()
 
-    const user = {
-        name: "Jose Kuri",
-        profileImage: "https://media.discordapp.net/attachments/750831694839545886/1172622670433624186/image.png",
-        role: "Warehouse Manager"
-    }
     return (
         <div className=" flex flex-col top-0 left-0 w-auto  h-full border-r text-black mr-5 bg-gray-100">
             <div className="flex items-center justify-center h-14 border-b">
@@ -128,20 +131,21 @@ export default function Sidebar() {
                             className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                         >
                             <span className="inline-flex justify-center items-center ml-4">
-                                <Image
-                                    src={user.profileImage}
+                                {/* <Image
+                                    src={user.imageUrl}
                                     width={40}
                                     height={40}
                                     className="rounded-full"
                                     alt="pimg"
-                                />
+                                /> */}
+                                <UserButton />
                             </span>
                             <span className="ml-2 text-sm tracking-wide truncate">
-                                {user.name}
+                                {user.username}
                             </span>
 
                             <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-blue-400 outline rounded-full">
-                                {user.role}
+                                {user.publicMetadata.role}
                             </span>
                         </a>
                     </li>
@@ -159,17 +163,7 @@ export default function Sidebar() {
                         </Link>
                     </li>
                     <li>
-                        <a
-                            href="#"
-                            className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-red-400 hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
-                        >
-                            <span className="inline-flex justify-center items-center ml-4 text-red-400">
-                                <LogoutOutlinedIcon />
-                            </span>
-                            <span className="ml-2 text-sm tracking-wide truncate">
-                                Logout
-                            </span>
-                        </a>
+                        <SignOutButton />
                     </li>
                 </ul>
             </div>

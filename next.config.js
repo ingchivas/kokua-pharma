@@ -12,6 +12,11 @@ const nextConfig = {
             hostname: 'media.discordapp.net',
             pathname: '/attachments/**',
           },
+          {
+            protocol: 'https',
+            hostname: 'img.clerk.com',
+            pathname: '/**',
+          }
         ]
       },
 
