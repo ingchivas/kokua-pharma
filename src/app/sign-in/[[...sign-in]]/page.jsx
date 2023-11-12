@@ -1,6 +1,5 @@
 import { SignIn } from '@clerk/nextjs';
 import Image from 'next/image';
-import { neobrutalism } from '@clerk/themes';
 
 const SignInPage = () => {
   return (
