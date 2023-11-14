@@ -3,15 +3,11 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Link from "next/link";
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import { auth, currentUser } from "@clerk/nextjs";
-import SignOutButton from "./SignOutButton"; 
+import { currentUser } from "@clerk/nextjs";
+import SignOutButton from "./SignOutButton";
 import {
-    ClerkProvider,
-    SignedIn,
-    SignedOut,
-    SignInButton,
     UserButton,
-  } from "@clerk/nextjs";
+} from "@clerk/nextjs";
 
 export default async function Sidebar() {
 
@@ -21,10 +17,11 @@ export default async function Sidebar() {
         <div className=" flex flex-col top-0 left-0 w-auto  h-full border-r text-black mr-5 bg-gray-100">
             <div className="flex items-center justify-center h-14 border-b">
                 <Link href="/">
-                <div className="flex items-center top-0">
-                    
-                    <Image src="/img/KokuaLogo.png" width={150} height={50} alt="logo" /> <span className="ml-1 text-black text-3xl font-extralight">Pharma</span>
-                </div>
+                    <div className="flex items-center top-0">
+
+                        <Image src="/img/KokuaLogo.png" width={100} height={50} alt="logo" />
+                        <span className="ml-1 text-black text-2xl font-extralight">Pharma</span>
+                    </div>
                 </Link>
             </div>
             <div className="overflow-y-auto overflow-x-hidden flex-grow">
@@ -38,7 +35,7 @@ export default async function Sidebar() {
                     </li>
                     <li>
                         <Link
-                            href="/dashboard"
+                            href="/"
                             className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus pr-6"
                         >
                             <span className="inline-flex justify-center items-center ml-4">
@@ -90,7 +87,19 @@ export default async function Sidebar() {
                             </div>
                         </div>
                     </li>
-
+                    <li>
+                        <Link
+                            href="/data/providers"
+                            className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                        >
+                            <span className="inline-flex justify-center items-center ml-4">
+                                <UploadFileIcon />
+                            </span>
+                            <span className="ml-2 text-sm tracking-wide truncate">
+                                Administrar Proveedores
+                            </span>
+                        </Link>
+                    </li>
                     <li>
                         <Link
                             href="/data/upload"
