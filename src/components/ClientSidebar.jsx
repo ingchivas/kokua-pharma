@@ -30,13 +30,13 @@ export default function ClientSidebar() {
             <div className=" flex flex-col top-0 left-0 w-auto h-full border-r text-black mr-5 bg-gray-100">
                 <div className="flex items-center justify-center h-14 border-b">
                     <Link href="/">
-                        <div className="flex items-center top-0">
-
+                        <div className="flex items-center">
                             <Image src="/img/KokuaLogo.png" width={100} height={50} alt="logo" />
-                            <span className="ml-1 text-black text-2xl font-extralight">Pharma</span>
+                            <span className="ml-1 text-black text-2xl font-extralight truncate">Pharma</span>
                         </div>
                     </Link>
                 </div>
+
                 <div className="overflow-y-auto overflow-x-hidden flex-grow">
                     <ul className="flex flex-col py-4 space-y-1">
                         <li className="px-5">
