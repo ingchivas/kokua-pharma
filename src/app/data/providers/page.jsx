@@ -413,7 +413,7 @@ export default function ProviderManagement() {
                                             fullWidth
                                             margin="normal"
                                         />
-                                        <Button type="submit" fullWidth variant="outlined" color="primary" className='mt-5'>
+                                        <Button type="submit" fullWidth variant="outlined" color="success" className='mt-5'>
                                             Actualizar
                                         </Button>
                                     </form>
@@ -449,8 +449,8 @@ export default function ProviderManagement() {
                                             margin="normal"
                                             disabled
                                         />
-                                        <Button type="submit" fullWidth variant="outlined" color="primary" className='mt-5'>
-                                            Eliminar
+                                        <Button type="submit" fullWidth variant="outlined" color="error" className='mt-5'>
+                                            Confirmar Eliminar
                                         </Button>
                                     </form>
                                 </CardContent>
