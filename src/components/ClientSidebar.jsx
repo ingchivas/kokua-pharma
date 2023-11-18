@@ -1,19 +1,19 @@
 "use client";
 import Image from "next/image";
-import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Link from "next/link";
-import ScheduleIcon from '@mui/icons-material/Schedule';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { useUser } from "@clerk/nextjs";
 import SignOutButton from "./SignOutButton";
 import { CircularProgress } from "@mui/material";
 import {
     UserButton,
 } from "@clerk/nextjs";
+
 import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import SettingsSuggestOutlinedIcon from '@mui/icons-material/SettingsSuggestOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export default function ClientSidebar() {
     const { isSignedIn, user, isLoaded } = useUser();
@@ -102,7 +102,7 @@ export default function ClientSidebar() {
                         </li>
                         <li>
                             <Link
-                                href="/data/upload"
+                                href="/data/medicines"
                                 className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
@@ -115,7 +115,7 @@ export default function ClientSidebar() {
                         </li>
                         <li>
                             <Link
-                                href="/data/upload"
+                                href="/data/orders"
                                 className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
@@ -158,7 +158,7 @@ export default function ClientSidebar() {
                                 </span>
                             </a>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link
                                 href="/data/users"
                                 className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
@@ -170,7 +170,7 @@ export default function ClientSidebar() {
                                     Modificar Roles y Acceso
                                 </span>
                             </Link>
-                        </li>
+                        </li> */}
                         <li>
                             <SignOutButton />
                         </li>

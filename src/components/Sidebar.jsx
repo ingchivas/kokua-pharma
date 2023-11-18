@@ -147,7 +147,7 @@ export default async function Sidebar() {
                             </span>
                         </a>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link
                             href="/data/users"
                             className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
@@ -159,7 +159,7 @@ export default async function Sidebar() {
                                 Modificar Roles y Acceso
                             </span>
                         </Link>
-                    </li>
+                    </li> */}
                     <li>
                         <SignOutButton />
                     </li>
