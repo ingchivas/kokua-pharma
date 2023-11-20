@@ -6,7 +6,7 @@ import { BadgeDelta, Card, Flex, Grid, Metric, ProgressBar, Text, deltaType, Bad
 import { useState, useEffect } from "react";
 
 import {
-    ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+    ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine
 } from 'recharts';
 
 const apiRoute = process.env.NEXT_PUBLIC_API_URL;
@@ -31,9 +31,28 @@ const DateTimeDisplay = () => {
     );
 };
 
+function firsfOver80(data) {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].acum_percentage > 80) {
+            console.log(data[i].ID);
+            return data[i].ID;
+        }
+    }
+}
+
+function firsfOver95(data) {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].acum_percentage > 95) {
+            console.log(data[i].ID);
+            return data[i].ID;
+        }
+    }
+}
 
 
 export default function Home() {
+
+
 
     // Method to get the data from the API, we get the most critical medicines with low stock
     const [expired, setExpired] = useState([]);
@@ -144,8 +163,6 @@ export default function Home() {
     //     "percentage": 1.5024498545398868
     //   },
 
-
-
     return (
         <>
             <div className="grid grid-cols-5 h-screen mr-5">
@@ -166,7 +183,7 @@ export default function Home() {
 
                     </div>
                     <div className="flex flex-col items-left justify-left py-2">
-                        <Grid numItemsMd={1} numItemsLg={4} className="mt-3 gap-1">
+                        <Grid numItemsMd={1} numItemsLg={3} className="mt-3 gap-1">
                             <Card className="max-w-sm">
                                 <Flex justifyContent="between" alignItems="center">
                                     <Text>Medicinas Expiradas (% - último mes)</Text>
@@ -242,7 +259,7 @@ export default function Home() {
                                     <XAxis dataKey="ID" scale="band" />
                                     <YAxis yAxisId="left" orientation="left" stroke="#413ea0" label={{ value: 'Cantidad Ordenada', angle: -90, position: 'insideLeft' }} />
                                     <YAxis yAxisId="right" orientation="right" stroke="#ff7300" label={{ value: 'Porcentaje Acumulado (%)', angle: -90, position: 'insideRight' }} />
-                                    <Tooltip 
+                                    <Tooltip
                                         formatter={(value, name, props) => {
                                             if (name === 'acum_percentage') {
                                                 return `${value.toFixed(2)}%`;
@@ -250,19 +267,16 @@ export default function Home() {
                                                 return value;
                                             }
                                         }}
-
-                                        // Add the ID identifier to the tooltip
                                         labelFormatter={(value) => {
                                             return `IDProducto: ${value}`;
                                         }}
-
-
-
                                     />
+                                    <ReferenceLine x={firsfOver80(dataGraph)} stroke="red" label="A‎ ‎ ‎ ‎ ‎ " yAxisId="left" strokeWidth={1} strokeDasharray="3 3" />
 
+                                    <ReferenceLine x={firsfOver95(dataGraph)} stroke="blue" label="B‎ ‎ ‎ ‎ ‎ " yAxisId="left" strokeWidth={1}/>
                                     <Legend />
                                     <Bar yAxisId="left" dataKey="CantidadOrdenada" barSize={20} fill="#413ea0" />
-                                    <Line yAxisId="right" type="monotone" dataKey="acum_percentage" stroke="#ff7300" dot={{ strokeWidth: 2 }} />
+                                    <Line yAxisId="right" type="monotone" dataKey="acum_percentage" stroke="#ff7300" strokeWidth={3} dot={false} />
                                 </ComposedChart>
                             </ResponsiveContainer>
                         </div>
