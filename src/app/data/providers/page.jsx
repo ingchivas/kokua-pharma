@@ -3,23 +3,20 @@ import React, { useState, useEffect } from 'react';
 import ClientSidebar from '@/components/ClientSidebar';
 import {
     Box, Paper, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, TablePagination, Fade, Checkbox
+    TableHead, TableRow, TablePagination, Fade, Checkbox,
+    CardContent, Card,
+    Button, Modal, TextField, Stack, IconButton, InputAdornment
 } from '@mui/material';
-
-import {
-    Typography, CardContent, Card,
-    Button, Modal, TextField, Stack, IconButton, InputAdornment, InputLabel, Input, FormControl
-} from '@mui/material';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import CloseIcon from '@mui/icons-material/Close';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
+const apiRoute = process.env.NEXT_PUBLIC_API_URL;
 
 function deleteProveedor(id) {
-    fetch(`http://localhost:6969/api/deleteProveedor/${id}`, {
+    fetch(`${apiRoute}/api/prov/deleteProveedor/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -30,7 +27,7 @@ function deleteProveedor(id) {
 }
 
 function addProveedor(nombre, ubicacion, numContacto) {
-    fetch('http://localhost:6969/api/registerProveedor', {
+    fetch(`${apiRoute}/api/prov/registerProveedor`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -48,7 +45,7 @@ function addProveedor(nombre, ubicacion, numContacto) {
 }
 
 function updateProveedor(id, nombre, ubicacion, numContacto) {
-    fetch(`http://localhost:6969/api/updateProveedor/${id}`, {
+    fetch(`${apiRoute}/api/prov/updateProveedor/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -190,7 +187,7 @@ export default function ProviderManagement() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:6969/api/getProveedores/');
+                const response = await fetch(`${apiRoute}/api/prov/getProveedores`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
