@@ -194,6 +194,35 @@ export default function Home() {
     //     }
     //   ]
 
+    const [topMeds, setTopMeds] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await fetch(`${apiRoute}/api/orders/topMeds`);
+            const json = await res.json();
+            setTopMeds(json);
+        };
+        fetchData();
+    }
+        , []);
+
+    // Recieves
+    // [
+    //     {
+    //       "id": 565,
+    //       "name": "PRISTIQ",
+    //       "medDescription": "Caja con 28 tabletas de 50 mg Desvenlafaxina",
+    //       "totalOrders": 147
+    //     },
+    //     {
+    //       "id": 112,
+    //       "name": "AVELOX",
+    //       "medDescription": "Caja con 7 tabletas de 400 mg. Moxifloxacino clorh",
+    //       "totalOrders": 112
+    //     }
+    //   ]
+
+
     return (
         <>
             <div className="grid grid-cols-5 h-screen mr-5">
@@ -214,10 +243,10 @@ export default function Home() {
 
                     </div>
                     <div className="flex flex-col items-left justify-left py-2">
-                        <Grid numItemsMd={3} numItemsLg={3} className="mt-3 gap-1">
+                        <Grid numItemsMd={3} numItemsLg={4} className="mt-3 gap-1">
                             <Card className="max-w-sm">
                                 <Flex justifyContent="between" alignItems="center">
-                                    <Text>Medicinas Expiradas (% - último mes)</Text>
+                                    <Text className='mt-2 text-xl font-semibold'>Medicinas caducas (% - último mes)</Text>
                                 </Flex>
                                 <Metric>{expired.expiredPercentage}% </Metric>
                                 <ProgressBar value={expired.expiredPercentage} className='mt-2' />
@@ -234,7 +263,7 @@ export default function Home() {
 
                             <Card className="max-w-sm">
                                 <Flex justifyContent="between" alignItems="center">
-                                    <Text>Ordenes a tiempo (% - último mes)</Text>
+                                    <Text className='mt-2 text-xl font-semibold'>Ordenes a tiempo (% - último mes)</Text>
                                 </Flex>
                                 <Metric>{onTime.onTimePercentage}% </Metric>
                                 <ProgressBar value={onTime.onTimePercentage} className='mt-2' />
@@ -252,7 +281,7 @@ export default function Home() {
                             <Card className="max-w-sm">
                                 <div className="flex flex-col items-left justify-left h-full py-6">
                                     <Flex justifyContent="between" alignItems="center">
-                                        <Text>Tiempo de entrega (días - último mes)</Text>
+                                        <Text className='mt-2 text-xl font-semibold'>Tiempo de entrega (días)</Text>
                                     </Flex>
                                     <Metric>{leadTime.leadTime} días </Metric>
                                     <Flex justifyContent="between" alignItems="center" className="mt-2">
@@ -262,6 +291,21 @@ export default function Home() {
                                         </BadgeDelta>
                                     </Flex>
                                     <Text className='mt-2 text-xl font-semibold'>{leadTime.leadTimePrevMonth} días</Text>
+                                </div>
+                            </Card>
+
+                            <Card className="max-w-sm">
+                                <div className="flex flex-col items-left justify-left h-full">
+                                    <Flex justifyContent="between" alignItems="center">
+                                        <Text className='mt-2 text-xl font-semibold'>Medicinas con mayor demanda</Text>
+                                    </Flex>
+                                    {topMeds.map((med) => (
+                                        <div className="flex flex-col items-left justify-left h-full">
+                                            <Text className='mt-2 text-xl font-semibold'>{med.name} - ID:{med.id}</Text>
+                                            <Text className='mt-2'>{med.medDescription}</Text>
+                                            <Text className='mt-2'>Total de ordenes: {med.totalOrders}</Text>
+                                        </div>
+                                    ))}
                                 </div>
                             </Card>
                         </Grid>
