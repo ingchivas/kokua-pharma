@@ -7,11 +7,17 @@ import {
     CardContent, Card,
     Button, Modal, TextField, Stack, IconButton, InputAdornment
 } from '@mui/material';
+
+import { Flex } from '@tremor/react';
+import DateTimeDisplay from '@/components/DateTimeDisplay';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CloseIcon from '@mui/icons-material/Close';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-
+import { useUser } from "@clerk/nextjs";
+import { CircularProgress } from "@mui/material";
+import NotAllowed from '@/components/NotAllowed';
+import { useRouter } from 'next/navigation'
 
 const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:6969';
 
@@ -76,6 +82,40 @@ const cardStyle = {
 };
 
 export default function ProviderManagement() {
+
+    const { isSignedIn, user, isLoaded } = useUser();
+    const router = useRouter()
+
+
+    if (!isLoaded) {
+        return (
+            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
+                <CircularProgress />
+            </div>
+
+        )
+    }
+
+    if (!isSignedIn) {
+        return (
+            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
+                <h1 className="text-2xl font-bold inline-block">
+                    Debes iniciar sesión
+                </h1>
+            </div>
+        )
+    }
+
+    if (user.publicMetadata.role === 'prv') {
+        router.push('/proveedores')
+    }
+
+    if (user.publicMetadata.role !== 'whm') {
+        return (
+            <NotAllowed />
+        )
+    }
+
     const [providers, setProviders] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -220,30 +260,37 @@ export default function ProviderManagement() {
                 <div className="col-span-4">
                     <div className="">
                         <div className="flex flex-col items-left justify-left py-2">
-                            <h1 className="text-2xl font-bold inline-block">Administrar Proveedores </h1>
+                            <Flex justifyContent="between" alignItems="center">
+                                <h1 className="text-2xl font-bold inline-block">
+                                    Administrar Proveedores
+                                </h1>
+                                <DateTimeDisplay />
+                            </Flex>
+                            <div className="border-b-2 border-gray-200"></div>
                         </div>
+
                         <Stack direction="row" spacing={1}>
                             <Button variant="outlined" onClick={handleOpen}>Añadir Proveedor</Button>
                             <Button variant="outlined" color="error" onClick={handleOpenDelete}>Eliminar Proveedor</Button>
                             <Button variant="outlined" color="success" onClick={handleOpenUpdate}>Actualizar Proveedor</Button>
                         </Stack>
                         <TextField
-                                label="Buscar Proveedor"
-                                placeholder="Ingrese el nombre del proveedor"
-                                variant="outlined"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                margin="normal"
-                                className='w-full mt-5'
-                                size='medium'
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment className='mr-5'>
-                                            <BusinessCenterIcon />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
+                            label="Buscar Proveedor"
+                            placeholder="Ingrese el nombre del proveedor"
+                            variant="outlined"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            margin="normal"
+                            className='w-full mt-5'
+                            size='medium'
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment className='mr-5'>
+                                        <BusinessCenterIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
 
                         <Box sx={{ width: '100%' }} className="mt-5">
                             <Paper sx={{ width: '100%', mb: 2 }}>

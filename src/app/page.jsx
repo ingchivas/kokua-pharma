@@ -1,35 +1,18 @@
 "use client";
-
-import Image from 'next/image'
 import ClientSidebar from '@/components/ClientSidebar';
 import { BadgeDelta, Card, Flex, Grid, Metric, ProgressBar, Text, deltaType, Badge } from "@tremor/react";
 import { useState, useEffect } from "react";
-
 import {
     ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine
 } from 'recharts';
+import DateTimeDisplay from '@/components/DateTimeDisplay';
+import { CircularProgress } from "@mui/material";
+import { useUser } from "@clerk/nextjs";
+import NotAllowed from '@/components/NotAllowed';
+import { useRouter } from 'next/navigation'
 
 const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:6969';
 const apiRoute2 = process.env.NEXT_PUBLIC_API_URL2 || 'http://localhost:5000';
-
-
-const DateTimeDisplay = () => {
-    const [currentDateTime, setCurrentDateTime] = useState(new Date());
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentDateTime(new Date());
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, []);
-
-    return (
-        <div className="font-semibold text-xl">
-            <p>{currentDateTime.toLocaleDateString() + " " + currentDateTime.toLocaleTimeString()}</p>
-        </div>
-    );
-};
 
 function firsfOver80(data) {
     for (let i = 0; i < data.length; i++) {
@@ -52,7 +35,38 @@ function firsfOver95(data) {
 
 export default function Home() {
 
+    const { isSignedIn, user, isLoaded } = useUser();
 
+    const router = useRouter()
+
+    if (!isLoaded) {
+        return (
+            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
+                <CircularProgress />
+            </div>
+
+        )
+    }
+
+    if (!isSignedIn) {
+        return (
+            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
+                <h1 className="text-2xl font-bold inline-block">
+                    Debes iniciar sesión
+                </h1>
+            </div>
+        )
+    }
+
+    if (user.publicMetadata.role === 'prv') {
+        router.push('/proveedores')
+    }
+
+    if (user.publicMetadata.role !== 'whm') {
+        return (
+            <NotAllowed />
+        )
+    }
 
     // Method to get the data from the API, we get the most critical medicines with low stock
     const [expired, setExpired] = useState([]);
