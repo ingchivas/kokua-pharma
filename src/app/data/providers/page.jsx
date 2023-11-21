@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
 
-const apiRoute = process.env.NEXT_PUBLIC_API_URL;
+const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 function deleteProveedor(id) {
     fetch(`${apiRoute}/api/prov/deleteProveedor/${id}`, {
