@@ -9,8 +9,8 @@ import {
     ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine
 } from 'recharts';
 
-const apiRoute = process.env.NEXT_PUBLIC_API_URL;
-const apiRoute2 = process.env.NEXT_PUBLIC_API_URL2;
+const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const apiRoute2 = process.env.NEXT_PUBLIC_API_URL2 || 'http://localhost:5000';
 
 
 const DateTimeDisplay = () => {
