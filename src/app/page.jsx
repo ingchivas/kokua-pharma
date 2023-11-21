@@ -9,7 +9,7 @@ import {
     ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine
 } from 'recharts';
 
-const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:6969';
 const apiRoute2 = process.env.NEXT_PUBLIC_API_URL2 || 'http://localhost:5000';
 
 
@@ -163,6 +163,37 @@ export default function Home() {
     //     "percentage": 1.5024498545398868
     //   },
 
+
+    const [topProviders, setTopProviders] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await fetch(`${apiRoute}/api/orders/topProviders`);
+            const json = await res.json();
+            setTopProviders(json);
+        };
+        fetchData();
+    }
+        , []);
+    // Recieves
+    // [
+    //     {
+    //       "provider": "Laboratorios Schoen, S.A. de C.V.",
+    //       "ordersOnTime": 100,
+    //       "leadTime": 1
+    //     },
+    //     {
+    //       "provider": "Genomma Laboratories México,S.A. de C.V.",
+    //       "ordersOnTime": 100,
+    //       "leadTime": 3
+    //     },
+    //     {
+    //       "provider": "Laboratorio Farmacológico Nutrimedi, S.A. de C.V.",
+    //       "ordersOnTime": 100,
+    //       "leadTime": 3
+    //     }
+    //   ]
+
     return (
         <>
             <div className="grid grid-cols-5 h-screen mr-5">
@@ -183,7 +214,7 @@ export default function Home() {
 
                     </div>
                     <div className="flex flex-col items-left justify-left py-2">
-                        <Grid numItemsMd={1} numItemsLg={3} className="mt-3 gap-1">
+                        <Grid numItemsMd={3} numItemsLg={3} className="mt-3 gap-1">
                             <Card className="max-w-sm">
                                 <Flex justifyContent="between" alignItems="center">
                                     <Text>Medicinas Expiradas (% - último mes)</Text>
@@ -235,55 +266,63 @@ export default function Home() {
                             </Card>
                         </Grid>
                     </div>
-
-                    <div className="flex flex-col items-left justify-left py-2">
-                        <div className="flex flex-col items-left justify-left py-2">
-                            <h1 className="text-2xl font-bold inline-block">
-                                Medicinas con mayor criticidad
-                            </h1>
-                        </div>
-                        <div className="flex flex-col items-left justify-left py-2">
-                            <ResponsiveContainer width="75%" height={300}>
-                                <ComposedChart
-                                    width={500}
-                                    height={400}
-                                    data={dataGraph}
-                                    margin={{
-                                        top: 20,
-                                        right: 20,
-                                        bottom: 20,
-                                        left: 20,
+                    <div className="flex flex-row items-left justify-left py-2">
+                        <Card className="max-w-sm mr-5">
+                            <div className="flex flex-col items-left justify-left h-full">
+                                <Flex justifyContent="between" alignItems="center">
+                                    <Text className='mt-2 text-xl font-semibold'>Proveedores con mejor desempeño</Text>
+                                </Flex>
+                                <Text className='mt-2'>Últimos 30 días</Text>
+                                {topProviders.map((provider) => (
+                                    <div className="flex flex-col items-left justify-left h-full py-6">
+                                        <Text className='mt-2 text-xl font-semibold'>{provider.provider}</Text>
+                                        <Text className='mt-2'>Ordenes a tiempo: {provider.ordersOnTime}%</Text>
+                                        <Text className='mt-2'>Tiempo de entrega: {provider.leadTime} días</Text>
+                                    </div>
+                                ))}
+                            </div>
+                        </Card>
+                        <ResponsiveContainer width="100%" height={500}>
+                            <Text className='mt-2 text-xl font-semibold'>Gráfica de Pareto</Text>
+                            <ComposedChart
+                                width={500}
+                                height={400}
+                                data={dataGraph}
+                                margin={{
+                                    top: 20,
+                                    right: 20,
+                                    bottom: 20,
+                                    left: 20,
+                                }}
+                                title='Gráfica de Pareto'
+                            >
+                                <CartesianGrid stroke="#f5f5f5" />
+                                <XAxis dataKey="ID" scale="band" />
+                                <YAxis yAxisId="left" orientation="left" stroke="#413ea0" label={{ value: 'Cantidad Ordenada', angle: -90, position: 'insideLeft' }} />
+                                <YAxis yAxisId="right" orientation="right" stroke="#ff7300" label={{ value: 'Porcentaje Acumulado (%)', angle: -90, position: 'insideRight' }} />
+                                <Tooltip
+                                    formatter={(value, name, props) => {
+                                        if (name === 'acum_percentage') {
+                                            return `${value.toFixed(2)}%`;
+                                        } else {
+                                            return value;
+                                        }
                                     }}
-                                >
-                                    <CartesianGrid stroke="#f5f5f5" />
-                                    <XAxis dataKey="ID" scale="band" />
-                                    <YAxis yAxisId="left" orientation="left" stroke="#413ea0" label={{ value: 'Cantidad Ordenada', angle: -90, position: 'insideLeft' }} />
-                                    <YAxis yAxisId="right" orientation="right" stroke="#ff7300" label={{ value: 'Porcentaje Acumulado (%)', angle: -90, position: 'insideRight' }} />
-                                    <Tooltip
-                                        formatter={(value, name, props) => {
-                                            if (name === 'acum_percentage') {
-                                                return `${value.toFixed(2)}%`;
-                                            } else {
-                                                return value;
-                                            }
-                                        }}
-                                        labelFormatter={(value) => {
-                                            return `IDProducto: ${value}`;
-                                        }}
-                                    />
-                                    <ReferenceLine x={firsfOver80(dataGraph)} stroke="red" label="A‎ ‎ ‎ ‎ ‎ " yAxisId="left" strokeWidth={1} strokeDasharray="3 3" />
+                                    labelFormatter={(value) => {
+                                        return `IDProducto: ${value}`;
+                                    }}
+                                />
+                                <ReferenceLine x={firsfOver80(dataGraph)} stroke="red" label="A‎ ‎ ‎ ‎ ‎ " yAxisId="left" strokeWidth={1} strokeDasharray="3 3" />
 
-                                    <ReferenceLine x={firsfOver95(dataGraph)} stroke="blue" label="B‎ ‎ ‎ ‎ ‎ " yAxisId="left" strokeWidth={1}/>
-                                    <Legend />
-                                    <Bar yAxisId="left" dataKey="CantidadOrdenada" barSize={20} fill="#413ea0" />
-                                    <Line yAxisId="right" type="monotone" dataKey="acum_percentage" stroke="#ff7300" strokeWidth={3} dot={false} />
-                                </ComposedChart>
-                            </ResponsiveContainer>
-                        </div>
-
+                                <ReferenceLine x={firsfOver95(dataGraph)} stroke="blue" label="B‎ ‎ ‎ ‎ ‎ " yAxisId="left" strokeWidth={1} />
+                                <Legend />
+                                <Bar yAxisId="left" dataKey="CantidadOrdenada" barSize={20} fill="#413ea0" />
+                                <Line yAxisId="right" type="monotone" dataKey="acum_percentage" stroke="#ff7300" strokeWidth={3} dot={false} />
+                            </ComposedChart>
+                        </ResponsiveContainer>
                     </div>
                 </div>
             </div>
         </>
-    )
+    );
 }
