@@ -15,7 +15,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import CloseIcon from '@mui/icons-material/Close';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import { useUser } from "@clerk/nextjs";
-import { CircularProgress } from "@mui/material";
 import NotAllowed from '@/components/NotAllowed';
 import { useRouter } from 'next/navigation'
 
@@ -89,20 +88,14 @@ export default function ProviderManagement() {
 
     if (!isLoaded) {
         return (
-            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
-                <CircularProgress />
-            </div>
+            <KokuaLoader />
 
         )
     }
 
     if (!isSignedIn) {
         return (
-            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
-                <h1 className="text-2xl font-bold inline-block">
-                    Debes iniciar sesión
-                </h1>
-            </div>
+            <MissingAuth />
         )
     }
 

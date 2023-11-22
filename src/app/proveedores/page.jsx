@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import ClientSidebar from '@/components/ClientSidebar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DateTimeDisplay from '@/components/DateTimeDisplay';
@@ -9,7 +8,7 @@ import { useUser } from "@clerk/nextjs";
 import NotAllowed from '@/components/NotAllowed';
 import { useRouter } from 'next/navigation'
 import ProviderSidebar from '@/components/ProviderSidebar';
-import { BadgeDelta, Card, Flex, Grid, Col,  Metric, ProgressBar, Text, deltaType, Badge, Title } from "@tremor/react";
+import { Card, Flex, Grid, Col, Text, Badge, Title, BarChart } from "@tremor/react";
 
 import {
     Table,
@@ -63,8 +62,6 @@ export default function proveedorPage() {
 
     const [providerId, setProviderId] = useState(user.publicMetadata.prvID);
 
-
-
     useEffect(() => {
         fetch(`${apiRoute}/api/orders/provider/${providerId}`)
             .then(res => res.json())
@@ -96,6 +93,13 @@ export default function proveedorPage() {
     //       "expectedDelivery": "2023-10-01T00:00:00.000Z",
     //       "status": "Realizado"
     //     },
+
+    // Format the date: YYYY-MM-DD of the orderDate and expectedDelivery
+    
+    orders.map((order) => {
+        order.orderDate = order.orderDate.split('T')[0];
+        order.expectedDelivery = order.expectedDelivery.split('T')[0];
+    })
 
     // Now we need to get the top 3 medicines that the provider has sold /topMeds/:id
 
@@ -140,14 +144,32 @@ export default function proveedorPage() {
     const [totalQuantity, setTotalQuantity] = useState([]);
 
     // Recieves
-    // {
-    //     "HYZAAR": 729,
-    //     "ZYKADIA": 359,
-    //     "AVELOX": 111,
-    //     "PRISTIQ": 861,
-    //     "NEXIUM ": 625,
-    //     "SIMPONI": 890
-    //   }
+    // [
+    //     {
+    //       "medicine": "SIMPONI",
+    //       "quantity": 890
+    //     },
+    //     {
+    //       "medicine": "PRISTIQ",
+    //       "quantity": 861
+    //     },
+    //     {
+    //       "medicine": "HYZAAR",
+    //       "quantity": 729
+    //     },
+    //     {
+    //       "medicine": "NEXIUM ",
+    //       "quantity": 625
+    //     },
+    //     {
+    //       "medicine": "ZYKADIA",
+    //       "quantity": 359
+    //     },
+    //     {
+    //       "medicine": "AVELOX",
+    //       "quantity": 111
+    //     }
+    //   ]
 
     useEffect(() => {
         fetch(`${apiRoute}/api/orders/totalQuantity/${providerId}`)
@@ -176,53 +198,41 @@ export default function proveedorPage() {
                             <DateTimeDisplay />
                         </Flex>
                         <div className="border-b-2 border-gray-200"></div>
-                        <div className="flex flex-col items-left justify-left py-2">
-                            <Grid numItemsMd={3} numItemsLg={4} className="mt-3 gap-1">
-                                <Card className="max-w-sm">
-                                    <Flex justifyContent="between" alignItems="center">
-                                        <Text className='text-xl font-semibold'>Top 3 medicinas (último mes) | {(user.publicMetadata.prvName) ? user.publicMetadata.prvName : user.username}</Text>
-                                    </Flex>
-                                    {topMeds.map((med) => {
-                                        return (
+                        <div className="flex flex-col items-left justify-left">
+                            <div className="flex flex-wrap mt-3">
+                                <div className="max-w-sm h-max lg:w-1/3 xl:w-1/4 px-2">
+                                    <Card>
+                                        <Flex justifyContent="between" alignItems="center">
+                                            <Text className='text-xl font-semibold'>
+                                                Top 3 medicinas (último mes)-
+                                                { (user.publicMetadata.prvName) ? user.publicMetadata.prvName : user.username}
+                                            </Text>
+                                        </Flex>
+                                        {topMeds.map((med) => (
                                             <div className="flex flex-col items-left justify-left py-2">
                                                 <Text className='text-lg font-semibold'>{med.name} | ID:{med.id}</Text>
                                                 <Text className='text-sm font-light'>{med.medDescription}</Text>
-                                                <Text className='text-sm font-medium '>Total de órdenes:{med.totalOrders}</Text>
+                                                <Text className='text-sm font-medium'>Total de órdenes: {med.totalOrders}</Text>
                                             </div>
-                                        )
-                                    })}
-                                </Card>
-
-                                <Card className="max-w-sm">
-                                    <Flex justifyContent="between" alignItems="center">
-                                        <Text className='text-xl font-semibold'>Total de medicinas vendidas</Text>
-                                    </Flex>
-                                    {Object.keys(totalQuantity).map((key) => {
-                                        return (
-                                            <div className="flex flex-col items-left justify-left py-2">
-                                                <Text className='text-lg font-semibold'>{key}</Text>
-                                                <Text className='text-sm font-medium '>Cantidad:{totalQuantity[key]}</Text>
-                                            </div>
-                                        )
-                                    })}
-                                </Card>
-                                <Col numColSpan={1} numColSpanLg={2}>
-                                <Card className="max-w-auto">
-                                    <Title className="text-xl font-semibold">Últimas Órdenes</Title>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableHeaderCell>Medicina</TableHeaderCell>
-                                                <TableHeaderCell>Descripción</TableHeaderCell>
-                                                <TableHeaderCell>Cantidad</TableHeaderCell>
-                                                <TableHeaderCell>Fecha de orden</TableHeaderCell>
-                                                <TableHeaderCell>Fecha de entrega</TableHeaderCell>
-                                                <TableHeaderCell>Status</TableHeaderCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {orders.map((order) => {
-                                                return (
+                                        ))}
+                                    </Card>
+                                </div>
+                                <div className="w-full lg:w-2/3 xl:w-3/4 px-2">
+                                    <Card className="max-w-full">
+                                        <Title className="text-xl font-semibold">Últimas Órdenes</Title>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableHeaderCell>Medicina</TableHeaderCell>
+                                                    <TableHeaderCell>Descripción</TableHeaderCell>
+                                                    <TableHeaderCell>Cantidad</TableHeaderCell>
+                                                    <TableHeaderCell>Fecha de orden</TableHeaderCell>
+                                                    <TableHeaderCell>Fecha de entrega</TableHeaderCell>
+                                                    <TableHeaderCell>Status</TableHeaderCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {orders.map((order) => (
                                                     <TableRow>
                                                         <TableCell>{order.medicine}</TableCell>
                                                         <TableCell>{order.medDescription}</TableCell>
@@ -230,25 +240,53 @@ export default function proveedorPage() {
                                                         <TableCell>{order.orderDate}</TableCell>
                                                         <TableCell>{order.expectedDelivery}</TableCell>
                                                         <TableCell>{
-                                                            (order.status === 'Realizado') ?
-                                                            <Badge deltaType="increase">{order.status}</Badge>
-                                                            :
-                                                            <Badge deltaType="decrease">{order.status}</Badge>
+                                                            (order.status === 'Realizado') ? <Badge color="green">{order.status}</Badge> :
+                                                                (order.status === 'Agendado') ? <Badge color="yellow">{order.status}</Badge> :
+                                                                    <Badge color="red">{order.status}</Badge>
                                                         }</TableCell>
-
                                                     </TableRow>
-                                                )
-                                            })}
-                                        </TableBody>
-                                    </Table>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </Card>
+                                </div>
+                            </div>
 
-
+                            <Grid numItemsMd={5} numItemsLg={4} className="mt-3 gap-1">
+                                <Card className="max-w-md">
+                                    <Flex justifyContent="between" alignItems="center">
+                                        <Text className='text-xl font-semibold'>Total de medicinas vendidas</Text>
+                                    </Flex>
+                                    {
+                                        totalQuantity.map((med) => {
+                                            return (
+                                                <div className="flex flex-col items-left justify-left py-2">
+                                                    <Text className='text-lg font-bold'>{med.medicine}</Text>
+                                                    <Text className='text-sm font-medium '>Total de unidades vendidas: {med.quantity}</Text>
+                                                </div>
+                                            )
+                                        })
+                                    }
                                 </Card>
+
+                                <Col numColSpan={3} numColSpanLg={3}>
+                                    <Card className="max-w-auto ml-3">
+                                        <Title>Medicinas vendidas (Total de Unidades Venidas a Kokua)</Title>
+                                        <BarChart
+                                            className="h-72 mt-4"
+                                            data={totalQuantity}
+                                            index='medicine'
+                                            categories={['quantity']}
+                                            colors={["blue"]}
+                                            valueFormatter={
+                                                (value) => {
+                                                    return `${value} unidades`
+                                                }
+                                            }
+                                        />
+                                    </Card>
                                 </Col>
                             </Grid>
-                        </div>
-                        <div className="flex flex-row items-left justify-left py-2">
-                            {/* Graph */}
                         </div>
                     </div>
                 </div>

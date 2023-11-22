@@ -5,7 +5,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Flex } from '@tremor/react';
 import DateTimeDisplay from '@/components/DateTimeDisplay';
-import { CircularProgress } from "@mui/material";
 import { useUser } from "@clerk/nextjs";
 import NotAllowed from '@/components/NotAllowed';
 import { useRouter } from 'next/navigation'
@@ -21,20 +20,14 @@ export default function OrderManagement() {
 
     if (!isLoaded) {
         return (
-            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
-                <CircularProgress />
-            </div>
+            <KokuaLoader />
 
         )
     }
 
     if (!isSignedIn) {
         return (
-            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
-                <h1 className="text-2xl font-bold inline-block">
-                    Debes iniciar sesión
-                </h1>
-            </div>
+            <MissingAuth />
         )
     }
 
