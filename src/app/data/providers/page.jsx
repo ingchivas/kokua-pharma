@@ -373,6 +373,7 @@ export default function ProviderManagement() {
                                     </Stack>
                                     <form onSubmit={handleSubmit}>
                                         <TextField
+                                            id='nombre'
                                             label="Nombre"
                                             name="nombre"
                                             value={newSupplier.nombre}
@@ -381,6 +382,7 @@ export default function ProviderManagement() {
                                             margin="normal"
                                         />
                                         <TextField
+                                            id='ubicacion'
                                             label="Ubicación"
                                             name="ubicacion"
                                             value={newSupplier.ubicacion}
@@ -389,6 +391,7 @@ export default function ProviderManagement() {
                                             margin="normal"
                                         />
                                         <TextField
+                                            id='numContacto'
                                             label="Número de Contacto"
                                             name="numContacto"
                                             value={newSupplier.numContacto}
@@ -502,7 +505,7 @@ export default function ProviderManagement() {
                         </Fade>
                     </Modal>
                 </div>
-                <ToastContainer />
+                <ToastContainer containerId={'A'} />
             </div>
         </>
     );
