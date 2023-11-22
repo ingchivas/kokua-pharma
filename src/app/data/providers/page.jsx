@@ -279,7 +279,9 @@ export default function ProviderManagement() {
                             placeholder="Ingrese el nombre del proveedor"
                             variant="outlined"
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => setSearchQuery(e.target.value)
+                                || setPage(0)
+                            }
                             margin="normal"
                             className='w-full mt-5'
                             size='medium'

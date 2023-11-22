@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:6969';
 
 
-export default function MedsManagement() {
+export default function LotesManagement() {
 
     const { isSignedIn, user, isLoaded } = useUser();
     const router = useRouter()
@@ -59,7 +59,7 @@ export default function MedsManagement() {
                     <div className="flex flex-col items-left justify-left py-2">
                         <Flex justifyContent="between" alignItems="center">
                             <h1 className="text-2xl font-bold inline-block">
-                                Administrar Medicamentos
+                                Administrar Lotes
                             </h1>
                             <DateTimeDisplay />
                         </Flex>
