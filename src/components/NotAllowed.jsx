@@ -31,17 +31,14 @@ function NotAllowed() {
                     Email de soporte
                 </a>
 
-
-
-                <Image
+                {/* <Image
                     src="https://media.discordapp.net/attachments/750831694839545886/1174946086654332938/0dff7e81-cfab-4655-90c1-174ae36d7240.png"
                     alt="403"
                     width={100}
                     height={100}
                     className='mt-5 rounded-lg shadow-md'
                 />
-                <p className="text-gray-500 mt-2 text-xs"> Iara no sabe cómo llegaste aquí, está un poco confundida</p>
-
+                <p className="text-gray-500 mt-2 text-xs"> Iara no sabe cómo llegaste aquí, está un poco confundida</p> */}
 
                 <div className="mt-5">
                     <a

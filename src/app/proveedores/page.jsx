@@ -180,7 +180,7 @@ export default function proveedorPage() {
                             <Grid numItemsMd={3} numItemsLg={4} className="mt-3 gap-1">
                                 <Card className="max-w-sm">
                                     <Flex justifyContent="between" alignItems="center">
-                                        <Text className='text-xl font-semibold'>Top 3 medicinas | {(user.publicMetadata.prvName) ? user.publicMetadata.prvName : user.username}</Text>
+                                        <Text className='text-xl font-semibold'>Top 3 medicinas (último mes) | {(user.publicMetadata.prvName) ? user.publicMetadata.prvName : user.username}</Text>
                                     </Flex>
                                     {topMeds.map((med) => {
                                         return (
