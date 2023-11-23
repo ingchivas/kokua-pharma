@@ -9,6 +9,8 @@ import DateTimeDisplay from '@/components/DateTimeDisplay';
 import { useUser } from "@clerk/nextjs";
 import NotAllowed from '@/components/NotAllowed';
 import { useRouter } from 'next/navigation'
+import MissingAuth from '@/components/MissingAuth';
+import KokuaLoader from '@/components/KokuaLoader';
 
 const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:6969';
 const apiRoute2 = process.env.NEXT_PUBLIC_API_URL2 || 'http://localhost:5000';
