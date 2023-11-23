@@ -212,20 +212,17 @@ function ProvOrders() {
                         </Flex>
                         <div className="border-b-2 border-gray-200"></div>
 
-                        <Grid numItemsMd={4} numItemsLg={4} className="mt-3 gap-1">
-
-                        <Button variant="outlined" endIcon={<ReplayIcon />}
-                            onClick={() => {
+                        <Grid numItemsMd={3} numItemsLg={3} className="mt-3 gap-1">
+                            <div className="flex flex-row justify-between">
+                            <IconButton onClick={() => {
                                 fetchOrders();
                                 setDateRange({
                                     from: new Date(new Date().setDate(new Date().getDate() - 730)),
                                     to: new Date(),
                                 });
-                            }}
-                            >
-                                Recargar
-                            </Button>
-
+                            }}>
+                                <ReplayIcon />
+                            </IconButton>
                             <TextInput icon={SearchIcon} placeholder="Filtrar por medicina ordenada" className="max-w-md mx-auto"
                                 onChange={(e) => {
                                     setTestText(e.target.value);
@@ -233,6 +230,9 @@ function ProvOrders() {
                                     setFilteredOrders(filtered);
                                 }}
                             />
+                            
+                            </div>
+
 
                             <MultiSelect
                                 className="max-w-md mx-auto"
