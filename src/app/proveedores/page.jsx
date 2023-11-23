@@ -18,6 +18,8 @@ import {
     TableRow,
     TableCell,
 } from "@tremor/react";
+import KokuaLoader from '@/components/KokuaLoader';
+import MissingAuth from '@/components/MissingAuth';
 
 
 
@@ -31,20 +33,14 @@ export default function proveedorPage() {
 
     if (!isLoaded) {
         return (
-            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
-                <CircularProgress />
-            </div>
+            <KokuaLoader />
 
         )
     }
 
     if (!isSignedIn) {
         return (
-            <div className=" flex flex-col top-0 left-0 w-auto items-center justify-center h-full border-r text-black mr-5 bg-gray-100">
-                <h1 className="text-2xl font-bold inline-block">
-                    Debes iniciar sesión
-                </h1>
-            </div>
+            <MissingAuth />
         )
     }
 
