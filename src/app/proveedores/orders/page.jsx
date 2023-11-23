@@ -25,7 +25,7 @@ import KokuaLoader from '@/components/KokuaLoader';
 import MissingAuth from '@/components/MissingAuth';
 import { MultiSelect, MultiSelectItem, DateRangePicker, DateRangePickerItem, DateRangePickerValue, TextInput } from "@tremor/react";
 
-import { IconButton, Button, Menu, MenuItem, Icon } from '@mui/material';
+import { IconButton, Button, Menu, MenuItem, Icon, Typography } from '@mui/material';
 
 
 const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:6969';
@@ -337,6 +337,7 @@ function ProvOrders() {
                                     <TableHeaderCell>ID de Pedido</TableHeaderCell>
                                     <TableHeaderCell>Medicina</TableHeaderCell>
                                     <TableHeaderCell>Descripción</TableHeaderCell>
+                                    <TableHeaderCell>Costo</TableHeaderCell>
                                     <TableHeaderCell>Cantidad</TableHeaderCell>
                                     <TableHeaderCell>Fecha de orden</TableHeaderCell>
                                     <TableHeaderCell>Fecha de entrega</TableHeaderCell>
@@ -350,6 +351,7 @@ function ProvOrders() {
                                         <TableCell>{order.id}</TableCell>
                                         <TableCell>{order.medicine}</TableCell>
                                         <TableCell>{order.medDescription}</TableCell>
+                                        <TableCell>${(order.ammount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</TableCell>
                                         <TableCell>{order.quantity}</TableCell>
                                         <TableCell>{order.orderDate}</TableCell>
                                         <TableCell>{order.expectedDelivery}</TableCell>
@@ -366,7 +368,7 @@ function ProvOrders() {
                                                 aria-expanded={open ? 'true' : undefined}
                                                 onClick={(e) => handleClick(e, order.id)}
                                             >
-                                                Cambiar status
+                                                <Text color="blue">Acciones</Text>
                                             </Button>
                                             <Menu
                                                 id="basic-menu"

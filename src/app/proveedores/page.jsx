@@ -21,7 +21,7 @@ import {
 import KokuaLoader from '@/components/KokuaLoader';
 import MissingAuth from '@/components/MissingAuth';
 
-
+import { DonutChart } from "@tremor/react";
 
 const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:6969';
 
@@ -91,7 +91,7 @@ export default function proveedorPage() {
     //     },
 
     // Format the date: YYYY-MM-DD of the orderDate and expectedDelivery
-    
+
     orders.map((order) => {
         order.orderDate = order.orderDate.split('T')[0];
         order.expectedDelivery = order.expectedDelivery.split('T')[0];
@@ -179,6 +179,62 @@ export default function proveedorPage() {
     }
         , [])
 
+    // Get the orders past due date 
+    // localhost:6969/api/orders/pastDeliveryDate/54
+
+    // Recieves
+    // {
+    //     "id": 168,
+    //     "medicine": "ZYKADIA",
+    //     "medDescription": "Caja con 150 cápsulas en envase de burbuja con 150 mg. Certinib",
+    //     "quantity": 359,
+    //     "ammount": 194937,
+    //     "orderDate": "2022-08-26T00:00:00.000Z",
+    //     "expectedDelivery": "2022-11-30T00:00:00.000Z",
+    //     "status": "Agendado"
+    //   },
+
+    const [pastDeliveryDate, setPastDeliveryDate] = useState([]);
+
+    useEffect(() => {
+        fetch(`${apiRoute}/api/orders/pastDeliveryDate/${providerId}`)
+            .then(res => res.json())
+            .then(res => {
+                setPastDeliveryDate(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+        , [])
+
+    const [missedRevenue, setMissedRevenue] = useState([]);
+
+    useEffect(() => {
+        fetch(`${apiRoute}/api/orders/missedRevenue/${providerId}`)
+            .then(res => res.json())
+            .then(res => {
+                setMissedRevenue(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+        , [])
+
+    // Recieves
+    // [
+    //     {
+    //       "revType": "Total",
+    //       "revAmount": 973690
+    //     },
+    //     {
+    //       "revType": "Missed",
+    //       "revAmount": 936258
+    //     }
+    //   ]
+
+
     return (
         <>
             <div className="grid grid-cols-5 h-screen mr-5">
@@ -201,7 +257,7 @@ export default function proveedorPage() {
                                         <Flex justifyContent="between" alignItems="center">
                                             <Text className='text-xl font-semibold'>
                                                 Top 3 medicinas (último mes)-
-                                                { (user.publicMetadata.prvName) ? user.publicMetadata.prvName : user.username}
+                                                {(user.publicMetadata.prvName) ? user.publicMetadata.prvName : user.username}
                                             </Text>
                                         </Flex>
                                         {topMeds.map((med) => (
@@ -221,6 +277,7 @@ export default function proveedorPage() {
                                                 <TableRow>
                                                     <TableHeaderCell>Medicina</TableHeaderCell>
                                                     <TableHeaderCell>Descripción</TableHeaderCell>
+                                                    <TableHeaderCell>Costo</TableHeaderCell>
                                                     <TableHeaderCell>Cantidad</TableHeaderCell>
                                                     <TableHeaderCell>Fecha de orden</TableHeaderCell>
                                                     <TableHeaderCell>Fecha de entrega</TableHeaderCell>
@@ -232,6 +289,7 @@ export default function proveedorPage() {
                                                     <TableRow>
                                                         <TableCell>{order.medicine}</TableCell>
                                                         <TableCell>{order.medDescription}</TableCell>
+                                                        <TableCell>${(order.ammount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</TableCell>
                                                         <TableCell>{order.quantity}</TableCell>
                                                         <TableCell>{order.orderDate}</TableCell>
                                                         <TableCell>{order.expectedDelivery}</TableCell>
@@ -248,24 +306,47 @@ export default function proveedorPage() {
                                 </div>
                             </div>
 
-                            <Grid numItemsMd={5} numItemsLg={4} className="mt-3 gap-1">
+                            <Grid numItemsMd={4} numItemsLg={4} className="mt-3 gap-1">
                                 <Card className="max-w-md">
                                     <Flex justifyContent="between" alignItems="center">
-                                        <Text className='text-xl font-semibold'>Total de medicinas vendidas</Text>
+                                        <Text className='text-xl font-semibold'>Medicinas con entrega atrasada</Text>
                                     </Flex>
                                     {
-                                        totalQuantity.map((med) => {
-                                            return (
+                                        (pastDeliveryDate.length === 0) ? <Text className='text-lg font-semibold'>No hay medicinas con entrega atrasada</Text> :
+                                            pastDeliveryDate.map((med) => (
                                                 <div className="flex flex-col items-left justify-left py-2">
-                                                    <Text className='text-lg font-bold'>{med.medicine}</Text>
-                                                    <Text className='text-sm font-medium '>Total de unidades vendidas: {med.quantity}</Text>
+                                                    <Text className='text-lg font-semibold'>{med.medicine} | Order ID:{med.id}</Text>
+                                                    <Text className='text-sm font-light'>{med.medDescription}</Text>
+                                                    <Text className='text-sm font-medium'>Fecha de entrega: {med.expectedDelivery.split('T')[0]}</Text>
+                                                    <Text className='text-sm font-medium'>Revenue perdido: ${(med.ammount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</Text>
+                                                    <Badge color="red">Atrasado</Badge>
+
                                                 </div>
-                                            )
-                                        })
+                                            ))
                                     }
+                                    <Text className='text-lg font-semibold'>Total de ordenes con entrega atrasada: {pastDeliveryDate.length}</Text>
+                                    <Text className='text-lg font-semibold'>Revenue perdido total: ${(pastDeliveryDate.reduce((a, b) => a + b.ammount, 0)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</Text>
                                 </Card>
 
-                                <Col numColSpan={3} numColSpanLg={3}>
+                                <Card className="max-w-lg">
+                                    <Title>Revenue perdido vs Revenue total</Title>
+
+                                    <DonutChart
+                                        className="h-72 mt-4"
+                                        data={missedRevenue}
+                                        index='revType'
+                                        category={'revAmount'}
+                                        colors={["green", "red"]}
+                                        valueFormatter={
+                                            (value) => {
+                                                return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+                                            }
+                                        }
+                                    />
+
+                                </Card>
+
+                                <Col numColSpan={2} numColSpanLg={2}>
                                     <Card className="max-w-auto ml-3">
                                         <Title>Medicinas vendidas (Total de Unidades Venidas a Kokua)</Title>
                                         <BarChart
