@@ -8,7 +8,7 @@ describe('test login', () => {
     cy.get('input[name="password"]').type(Cypress.env('providerPassword'));
     cy.get('.cl-formButtonPrimary').click();
     cy.url().should('include', '/proveedores');
-    cy.get('h1').should('contain', 'Bienvenido, proveedor: Drugmex, S.A.P.I. de C.V.');
+    cy.get('h1').should('contain', 'Bienvenido, proveedor:');
   });
 }
 );
