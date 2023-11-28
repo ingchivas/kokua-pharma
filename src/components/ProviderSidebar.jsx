@@ -24,7 +24,7 @@ export default function ProviderSidebar() {
     }
     if (isSignedIn) {
         return (
-            <div className=" flex flex-col top-0 left-0 w-auto h-full border-r text-black mr-5 bg-gray-100">
+            <div className=" flex flex-col top-0 left-0 w-auto h-full border-r text-black mr-5 bg-blue-50">
                 <div className="flex items-center justify-center h-14 border-b">
                     <Link href="/">
                         <div className="flex items-center">
@@ -48,7 +48,7 @@ export default function ProviderSidebar() {
                         <li>
                             <Link
                                 href="/proveedores"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <DashboardOutlinedIcon />
@@ -70,7 +70,7 @@ export default function ProviderSidebar() {
                         <li>
                             <Link
                                 href="/proveedores/medicines"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <MedicationOutlinedIcon />
@@ -83,7 +83,7 @@ export default function ProviderSidebar() {
                         <li>
                             <Link
                                 href="/proveedores/orders"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <DescriptionOutlinedIcon />
@@ -104,7 +104,7 @@ export default function ProviderSidebar() {
                         <li>
                             <a
                                 href="#"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <UserButton />
@@ -120,7 +120,7 @@ export default function ProviderSidebar() {
                             {/* Provider ID */}
                             <a
                                 href="#"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-400 font-medium hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-gray-400 font-medium hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <span className="text-sm tracking-wide truncate">

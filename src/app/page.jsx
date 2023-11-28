@@ -235,7 +235,7 @@ export default function Home() {
     return (
         <>
             <div className="grid grid-cols-5 h-screen mr-5">
-                <div className="col-span-1">
+                <div className="col-span-1 ">
                     <ClientSidebar />
                 </div>
                 <div className="col-span-4">

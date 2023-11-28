@@ -7,15 +7,14 @@ import { useUser } from "@clerk/nextjs";
 import NotAllowed from '@/components/NotAllowed';
 import { useRouter } from 'next/navigation'
 import ProviderSidebar from '@/components/ProviderSidebar';
-import { Card, Flex, Grid, Col, Text, Badge, Title, BarChart } from "@tremor/react";
 import FlagIcon from '@mui/icons-material/Flag';
 import {
-    Table,
+    Table,Card, Flex, Grid, Col, Text, Badge, Title, BarChart,
     TableHead,
     TableHeaderCell,
     TableBody,
     TableRow,
-    TableCell,
+    TableCell, MultiSelect, MultiSelectItem, DateRangePicker, DateRangePickerItem, DateRangePickerValue, TextInput
 } from "@tremor/react";
 import ReplayIcon from '@mui/icons-material/Replay';
 
@@ -23,7 +22,6 @@ import { es } from "date-fns/locale";
 import SearchIcon from '@mui/icons-material/Search';
 import KokuaLoader from '@/components/KokuaLoader';
 import MissingAuth from '@/components/MissingAuth';
-import { MultiSelect, MultiSelectItem, DateRangePicker, DateRangePickerItem, DateRangePickerValue, TextInput } from "@tremor/react";
 
 import { IconButton, Button, Menu, MenuItem, Icon, Typography } from '@mui/material';
 

@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const SignInPage = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50">
       <Image src="/img/KokuaLogo.png" alt="Kokua Logo" width={200} height={200} className='mb-5' />
       <SignIn appearance={{
         "layout": {

@@ -1,24 +1,30 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import ClientSidebar from '@/components/ClientSidebar';
 import {
     Box, Paper, Table, TableBody, TableCell, TableContainer,
     TableHead, TableRow, TablePagination, Fade, Checkbox,
     CardContent, Card,
-    Button, Modal, TextField, Stack, IconButton, InputAdornment
+    Button, Modal, TextField, Stack, IconButton, InputAdornment, Select
 } from '@mui/material';
 
 import { Flex } from '@tremor/react';
 import DateTimeDisplay from '@/components/DateTimeDisplay';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import CloseIcon from '@mui/icons-material/Close';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import ReplayIcon from '@mui/icons-material/Replay';
+
 import { useUser } from "@clerk/nextjs";
-import NotAllowed from '@/components/NotAllowed';
+
 import { useRouter } from 'next/navigation'
+
+import ClientSidebar from '@/components/ClientSidebar';
+import NotAllowed from '@/components/NotAllowed';
 import MissingAuth from '@/components/MissingAuth';
 import KokuaLoader from '@/components/KokuaLoader';
+import { MenuItem } from '@nextui-org/react';
 
 const apiRoute = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:6969';
 
@@ -219,21 +225,22 @@ export default function ProviderManagement() {
         toast.success('Proveedor eliminado con éxito');
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${apiRoute}/api/prov/getProveedores`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setProviders(data);
-                console.log(data);
-            } catch (error) {
-                toast.error('Error al obtener proveedores');
-                console.error('Fetch error:', error);
+
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${apiRoute}/api/prov/getProveedores`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        };
+            const data = await response.json();
+            setProviders(data);
+        } catch (error) {
+            toast.error('Error al obtener proveedores');
+            console.error('Fetch error:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -248,7 +255,7 @@ export default function ProviderManagement() {
 
     return (
         <>
-            <div className="grid grid-cols-5 h-screen mr-5">
+            <div className="grid grid-cols-5 h-screen mr-5 ">
                 <div className="col-span-1">
                     <ClientSidebar />
                 </div>
@@ -265,6 +272,31 @@ export default function ProviderManagement() {
                         </div>
 
                         <Stack direction="row" spacing={1}>
+                        <IconButton onClick={() => {
+                            fetchData();
+                            setSearchQuery("");
+                            setPage(0);
+                            setSelectedProvider([]);
+                            toast.success('Proveedores actualizados con éxito');
+                            setUpdateSupplier({
+                                IDProveedor: '',
+                                Nombre: '',
+                                Ubicaci_n: '',
+                                NumContacto: ''
+                            });
+                            setDeleteSupplier({
+                                IDProveedor: ''
+                            });
+                            setNewSupplier({
+                                Nombre: '',
+                                Ubicaci_n: '',
+                                NumContacto: ''
+                            });
+
+
+                        }}>
+                            <ReplayIcon />
+                        </IconButton>
                             <Button variant="outlined" onClick={handleOpen}>Añadir Proveedor</Button>
                             <Button variant="outlined" color="error" onClick={handleOpenDelete}>Eliminar Proveedor</Button>
                             <Button variant="outlined" color="success" onClick={handleOpenUpdate}>Actualizar Proveedor</Button>
@@ -501,8 +533,9 @@ export default function ProviderManagement() {
                             </Card>
                         </Fade>
                     </Modal>
+                    <ToastContainer containerId={'A'} />
                 </div>
-                <ToastContainer containerId={'A'} />
+                
             </div>
         </>
     );

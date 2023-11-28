@@ -13,7 +13,7 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import SettingsSuggestOutlinedIcon from '@mui/icons-material/SettingsSuggestOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 export default function ClientSidebar() {
     const { isSignedIn, user, isLoaded } = useUser();
@@ -27,7 +27,7 @@ export default function ClientSidebar() {
     }
     if (isSignedIn) {
         return (
-            <div className=" flex flex-col top-0 left-0 w-auto h-full border-r text-black mr-5 bg-gray-100">
+            <div className=" flex flex-col top-0 left-0 w-auto h-full border-r text-black mr-5 bg-blue-50">
                 <div className="flex items-center justify-center h-14 border-b">
                     <Link href="/">
                         <div className="flex items-center">
@@ -49,7 +49,7 @@ export default function ClientSidebar() {
                         <li>
                             <Link
                                 href="/"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <DashboardOutlinedIcon />
@@ -63,20 +63,20 @@ export default function ClientSidebar() {
 
                             <div className="flex flex-row items-center h-8">
                                 <div className="text-sm font-medium tracking-wide text-gray-500">
-                                    Metrics
+                                    Lotes
                                 </div>
                             </div>
                         </li>
                         <li>
                             <Link
-                                href="/metrics/"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                href="/data/batches"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
-                                    <ScheduleIcon />
+                                    <AppRegistrationIcon />
                                 </span>
                                 <span className="ml-2 text-sm tracking-wide truncate">
-                                    Datos Históricos
+                                    Administrar Lotes
                                 </span>
                             </Link>
                         </li>
@@ -90,7 +90,7 @@ export default function ClientSidebar() {
                         <li>
                             <Link
                                 href="/data/providers"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <SettingsSuggestOutlinedIcon />
@@ -103,7 +103,7 @@ export default function ClientSidebar() {
                         <li>
                             <Link
                                 href="/data/medicines"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <MedicationOutlinedIcon />
@@ -116,7 +116,7 @@ export default function ClientSidebar() {
                         <li>
                             <Link
                                 href="/data/orders"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <DescriptionOutlinedIcon />
@@ -137,7 +137,7 @@ export default function ClientSidebar() {
                         <li>
                             <a
                                 href="#"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     {/* <Image
@@ -161,7 +161,7 @@ export default function ClientSidebar() {
                         {/* <li>
                             <Link
                                 href="/data/users"
-                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
+                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-200 text-black hover:text-gray-800 border-l-4 border-transparent hover:border-doradoUP-focus  pr-6"
                             >
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <AdminPanelSettingsIcon />
