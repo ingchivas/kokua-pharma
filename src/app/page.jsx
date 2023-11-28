@@ -275,7 +275,7 @@ export default function Home() {
                                     <Text className='mt-2 text-xl font-semibold'>Ordenes a tiempo (% - último mes)</Text>
                                 </Flex>
                                 <Metric>{onTime.onTimePercentage}% </Metric>
-                                <ProgressBar value={onTime.onTimePercentage} className='mt-2' />
+                                <ProgressBar value={onTime.onTimePercentage.toFixed(2)} className='mt-2' />
                                 <Flex justifyContent="between" alignItems="center" className="mt-2">
                                     <Text>Mes Anterior</Text>
                                     <BadgeDelta deltaType={deltaType(onTime.delta)} isIncreasePositive={isIncreasePositive(onTime.delta)} className='font-semibold'>
