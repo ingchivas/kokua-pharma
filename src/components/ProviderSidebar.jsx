@@ -76,7 +76,7 @@ export default function ProviderSidebar() {
                                     <MedicationOutlinedIcon />
                                 </span>
                                 <span className="ml-2 text-sm tracking-wide truncate">
-                                    Administrar Medicinas
+                                    Catálogo Medicinas
                                 </span>
                             </Link>
                         </li>

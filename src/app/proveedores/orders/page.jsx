@@ -146,9 +146,7 @@ function ProvOrders() {
         setAnchorEl(null);
         setSelectedOrderId(null);
     };
-    const [statusUpdated, setStatusUpdated] = useState(false);
-
-
+    
     // router_orders.put('/updateStatus', async (req, res) => {
     //     try {
     //         const { orderID, status } = req.body;
