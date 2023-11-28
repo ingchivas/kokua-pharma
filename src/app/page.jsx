@@ -274,7 +274,7 @@ export default function Home() {
                                 <Flex justifyContent="between" alignItems="center">
                                     <Text className='mt-2 text-xl font-semibold'>Ordenes a tiempo (% - último mes)</Text>
                                 </Flex>
-                                <Metric>{onTime.onTimePercentage.toFixed(2)}% </Metric>
+                                <Metric>{onTime.onTimePercentage}% </Metric>
                                 <ProgressBar value={onTime.onTimePercentage} className='mt-2' />
                                 <Flex justifyContent="between" alignItems="center" className="mt-2">
                                     <Text>Mes Anterior</Text>
