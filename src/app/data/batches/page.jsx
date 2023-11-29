@@ -1,11 +1,14 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import ClientSidebar from '@/components/ClientSidebar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Flex } from '@tremor/react';
-import DateTimeDisplay from '@/components/DateTimeDisplay';
 import { useUser } from "@clerk/nextjs";
+
+import ClientSidebar from '@/components/ClientSidebar';
+import DateTimeDisplay from '@/components/DateTimeDisplay';
+import KokuaLoader from '@/components/KokuaLoader';
+import MissingAuth from '@/components/MissingAuth';
 import NotAllowed from '@/components/NotAllowed';
 import { useRouter } from 'next/navigation'
 

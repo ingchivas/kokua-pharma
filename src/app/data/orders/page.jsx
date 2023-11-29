@@ -10,20 +10,27 @@ import MissingAuth from '@/components/MissingAuth';
 import KokuaLoader from '@/components/KokuaLoader';
 
 import {
-    Table, Card, Flex, Grid, Col, Text, Badge, Title, BarChart,
+    Table, Flex, Grid, Badge,
     TableHead,
     TableHeaderCell,
     TableBody,
     TableRow,
     TableCell, MultiSelect, MultiSelectItem, DateRangePicker, DateRangePickerItem, DateRangePickerValue, TextInput
 } from "@tremor/react";
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    Box, Paper,
+    CardContent, Card,
+    Modal, TextField, Stack,
+} from '@mui/material';
 
 import ReplayIcon from '@mui/icons-material/Replay';
 import SearchIcon from '@mui/icons-material/Search';
+import { SearchSelect, SearchSelectItem, NumberInput } from "@tremor/react";
 
 import { es } from "date-fns/locale";
 
-import { IconButton, Button, Menu, MenuItem, Icon, Typography } from '@mui/material';
+import { IconButton, Button } from '@mui/material';
 import FlagIcon from '@mui/icons-material/Flag';
 
 
@@ -74,11 +81,7 @@ export default function OrderManagement() {
                     ...order,
                     orderDate: order.orderDate.split('T')[0],
                     expectedDelivery: order.expectedDelivery.split('T')[0],
-                })).sort((a, b) => {
-                    if (a.status === 'Agendado') return -1;
-                    if (b.status === 'Agendado') return 1;
-                    return 0;
-                });
+                }));
                 setOrders(formattedOrders);
                 setFilteredOrders(formattedOrders);
             })
@@ -98,8 +101,6 @@ export default function OrderManagement() {
 
     const formatDate = (dateString) => dateString.split('T')[0];
 
-    
-
     const filterOrdersByDate = () => {
         const filtered = orders.filter(order => {
             const orderDate = new Date(formatDate(order.orderDate));
@@ -112,7 +113,191 @@ export default function OrderManagement() {
         filterOrdersByDate();
     }, [dateRange, orders]);
 
+    const [testText, setTestText] = useState('');
 
+    // router_orders.post('/generate', async (req, res) => {
+    //     try {
+    //         const { providerID, medicineID, quantity } = req.body;
+
+    //         const medicine = await prisma.medicinas.findUnique({
+    //             where: {
+    //                 IDMedicina: medicineID
+    //             }
+    //         });
+
+    //         const order = await prisma.ordenes.create({
+    //             data: {
+    //                 IDProveedor: providerID,
+    //                 IDMedicina: medicineID,
+    //                 CantidadOrdenada: quantity,
+    //                 Costo: medicine.Precio * quantity,
+    //                 Estatus: 'Agendado',
+    //                 EntregaEsperada: new Date(new Date().setDate(new Date().getDate() + 7))
+    //             }
+    //         });
+
+    //         res.json(order);
+    //     } catch (error) {
+    //         res.status(500).send({ error: error.message });
+    //     }
+    // });
+
+    const [openAdd, setOpenAdd] = useState(false);
+
+    const handleOpenAdd = () => {
+        setOpenAdd(true);
+    }
+
+    const modalStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    };
+
+    const cardStyle = {
+        outline: 'none',
+        minWidth: 300,
+        padding: '20px',
+        backgroundColor: 'white',
+        borderRadius: '5px',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)'
+    };
+
+    function CreateOrder() {
+        const [providerID, setProviderID] = useState('');
+        const [medicineID, setMedicineID] = useState('');
+        const [quantity, setQuantity] = useState();
+        const [medsList, setMedsList] = useState([]);
+        const [providersList, setProvidersList] = useState([]);
+
+
+        useEffect(() => {
+            fetch(`${apiRoute}/api/meds/medsNames`)
+                .then(res => res.json())
+                .then(res => {
+                    const formattedMeds = res.map(med => ({
+                        ...med,
+                        value: med.IDMedicina,
+                        label: med.NombreMedicina,
+                    }));
+                    setMedsList(formattedMeds);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }, []);
+
+        useEffect(() => {
+            fetch(`${apiRoute}/api/prov/nameProveedores`)
+                .then(res => res.json())
+                .then(res => {
+                    const formattedProviders = res.map(provider => ({
+                        ...provider,
+                        value: provider.IDProveedor,
+                        label: provider.Nombre,
+                    }));
+                    setProvidersList(formattedProviders);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }, []);
+
+
+
+
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            fetch(`${apiRoute}/api/orders/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    providerID,
+                    medicineID,
+                    quantity
+                })
+            })
+                .then(res => res.json())
+                .then(res => {
+                    toast.success('Orden generada exitosamente');
+                    setOpenAdd(false);
+                    fetchOrders();
+                })
+                .catch(err => {
+                    console.log(err);
+                    toast.error('Error al generar orden');
+                });
+        }
+
+        return (
+            <Modal
+                open={openAdd}
+                onClose={() => setOpenAdd(false)}
+                style={modalStyle}
+            >
+                <Card style={cardStyle} className="w-1/2">
+                    <CardContent>
+                        <Stack direction="row" spacing={2}>
+                            <h1 className="text-2xl font-bold inline-block">Generar Orden </h1>
+                            <div className="flex-grow text-right">
+                                <IconButton onClick={() => setOpenAdd(false)}>
+                                    <CloseIcon />
+                                </IconButton>
+                            </div>
+                        </Stack>
+                        <form onSubmit={handleSubmit}>
+                            <SearchSelect
+                                className="w-full mt-3"
+                                placeholder="Proveedor"
+                                icon={SearchIcon}
+                                onValueChange={(value) => {
+                                    setProviderID(value);
+                                }}
+                            >
+                                {providersList.map((provider) => (
+                                    <SearchSelectItem key={provider.value} value={provider.value}>
+                                        {provider.label}
+                                    </SearchSelectItem>
+                                ))}
+                            </SearchSelect>
+
+                            <SearchSelect
+                                className="w-full mt-3"
+                                placeholder="Medicina"
+                                icon={SearchIcon}
+                                onValueChange={(value) => {
+                                    setMedicineID(value);
+                                }}
+                            >
+                                {medsList.map((med) => (
+                                    <SearchSelectItem key={med.value} value={med.value}>
+                                        {med.label}
+                                    </SearchSelectItem>
+                                ))}
+                            </SearchSelect>
+
+                            <NumberInput
+                                placeholder='Cantidad a ordenar'
+                                value={quantity}
+                                onValueChange={(e) => setQuantity(e)}
+                                className="w-full mt-3 mb-10"
+                            />
+
+                            <Button
+                                variant="contained"
+                                type="submit"
+                                className="w-full mt-5"
+                            >
+                                Generar
+                            </Button>
+                        </form>
+                    </CardContent>
+                </Card>
+            </Modal>
+        )
+    }
 
     return (
         <>
@@ -131,6 +316,12 @@ export default function OrderManagement() {
                         <div className="border-b-2 border-gray-200"></div>
                     </div>
 
+                    <Button variant="outlined" onClick={
+                        () => {
+                            handleOpenAdd();
+                        }
+                    }>Generar Orden</Button>
+
                     <Grid numItemsMd={3} numItemsLg={3} className="mt-3 gap-1">
                         <div className="flex flex-row justify-between">
                             <IconButton onClick={() => {
@@ -139,8 +330,11 @@ export default function OrderManagement() {
                                     from: new Date(new Date().setDate(new Date().getDate() - 730)),
                                     to: new Date(),
                                 });
+                                setTestText('');
+                                toast.success('Ordenes actualizadas');
+
                             }}>
-                                <ReplayIcon />
+                            <ReplayIcon />
                             </IconButton>
                             <TextInput icon={SearchIcon} placeholder="Filtrar por medicina ordenada" className="max-w-md mx-auto"
                                 onChange={(e) => {
@@ -247,10 +441,13 @@ export default function OrderManagement() {
                         </DateRangePicker>
                     </Grid>
 
+                    <CreateOrder />
+
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableHeaderCell>ID de Pedido</TableHeaderCell>
+                                <TableHeaderCell>ID</TableHeaderCell>
+                                <TableHeaderCell>Proveedor</TableHeaderCell>
                                 <TableHeaderCell>Medicina</TableHeaderCell>
                                 <TableHeaderCell>Descripción</TableHeaderCell>
                                 <TableHeaderCell>Costo</TableHeaderCell>
@@ -264,6 +461,7 @@ export default function OrderManagement() {
                             {filteredOrders.map((order) => (
                                 <TableRow key={order.id}>
                                     <TableCell>{order.id}</TableCell>
+                                    <TableCell className='truncate overflow-hidden max-w-xs'>{order.provider}</TableCell>
                                     <TableCell>{order.medicine}</TableCell>
                                     <TableCell className='truncate overflow-hidden max-w-sm'>{order.medDescription}</TableCell>
                                     <TableCell>${(order.ammount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</TableCell>
