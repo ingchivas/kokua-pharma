@@ -272,31 +272,31 @@ export default function ProviderManagement() {
                         </div>
 
                         <Stack direction="row" spacing={1}>
-                        <IconButton onClick={() => {
-                            fetchData();
-                            setSearchQuery("");
-                            setPage(0);
-                            setSelectedProvider([]);
-                            toast.success('Proveedores actualizados con éxito');
-                            setUpdateSupplier({
-                                IDProveedor: '',
-                                Nombre: '',
-                                Ubicaci_n: '',
-                                NumContacto: ''
-                            });
-                            setDeleteSupplier({
-                                IDProveedor: ''
-                            });
-                            setNewSupplier({
-                                Nombre: '',
-                                Ubicaci_n: '',
-                                NumContacto: ''
-                            });
+                            <IconButton onClick={() => {
+                                fetchData();
+                                setSearchQuery("");
+                                setPage(0);
+                                setSelectedProvider([]);
+                                toast.success('Proveedores actualizados con éxito');
+                                setUpdateSupplier({
+                                    IDProveedor: '',
+                                    Nombre: '',
+                                    Ubicaci_n: '',
+                                    NumContacto: ''
+                                });
+                                setDeleteSupplier({
+                                    IDProveedor: ''
+                                });
+                                setNewSupplier({
+                                    Nombre: '',
+                                    Ubicaci_n: '',
+                                    NumContacto: ''
+                                });
 
 
-                        }}>
-                            <ReplayIcon />
-                        </IconButton>
+                            }}>
+                                <ReplayIcon />
+                            </IconButton>
                             <Button variant="outlined" onClick={handleOpen}>Añadir Proveedor</Button>
                             <Button variant="outlined" color="error" onClick={handleOpenDelete}>Eliminar Proveedor</Button>
                             <Button variant="outlined" color="success" onClick={handleOpenUpdate}>Actualizar Proveedor</Button>
@@ -535,7 +535,7 @@ export default function ProviderManagement() {
                     </Modal>
                     <ToastContainer containerId={'A'} />
                 </div>
-                
+
             </div>
         </>
     );

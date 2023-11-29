@@ -203,9 +203,6 @@ export default function OrderManagement() {
                 });
         }, []);
 
-
-
-
         const handleSubmit = (e) => {
             e.preventDefault();
             fetch(`${apiRoute}/api/orders/generate`, {
@@ -334,7 +331,7 @@ export default function OrderManagement() {
                                 toast.success('Ordenes actualizadas');
 
                             }}>
-                            <ReplayIcon />
+                                <ReplayIcon />
                             </IconButton>
                             <TextInput icon={SearchIcon} placeholder="Filtrar por medicina ordenada" className="max-w-md mx-auto"
                                 onChange={(e) => {
