@@ -205,6 +205,13 @@ export default function OrderManagement() {
 
         const handleSubmit = (e) => {
             e.preventDefault();
+
+            if (!providerID || !medicineID || !quantity) {
+                toast.error('Todos los campos son requeridos');
+                return;
+            }
+
+
             fetch(`${apiRoute}/api/orders/generate`, {
                 method: 'POST',
                 headers: {
