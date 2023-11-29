@@ -85,29 +85,6 @@ function ProvOrders() {
         fetchOrders();
     }, [providerId]);
 
-
-
-
-    // Recieves 
-    // [
-    //     {
-    //       "id": 458,
-    //       "medicine": "NEXIUM ",
-    //       "medDescription": "Caja con 28 sobres de 2.5 mg granulado Esomeprazol",
-    //       "quantity": 625,
-    //       "orderDate": "2023-09-12T00:00:00.000Z",
-    //       "expectedDelivery": "2023-10-21T00:00:00.000Z",
-    //       "status": "Realizado"
-    //     },
-    //     {
-    //       "id": 507,
-    //       "medicine": "SIMPONI",
-    //       "medDescription": "Caja con pluma precargada con 0.5ml/50mg Golimumab",
-    //       "quantity": 890,
-    //       "orderDate": "2023-08-24T00:00:00.000Z",
-    //       "expectedDelivery": "2023-10-01T00:00:00.000Z",
-    //       "status": "Realizado"
-    //     },
     const [dateRange, setDateRange] = useState({
         from: new Date(new Date().setDate(new Date().getDate() - 730)),
         to: new Date(),
@@ -144,25 +121,6 @@ function ProvOrders() {
         setAnchorEl(null);
         setSelectedOrderId(null);
     };
-    
-    // router_orders.put('/updateStatus', async (req, res) => {
-    //     try {
-    //         const { orderID, status } = req.body;
-
-    //         const order = await prisma.ordenes.update({
-    //             where: {
-    //                 IDOrden: orderID
-    //             },
-    //             data: {
-    //                 Estatus: status
-    //             }
-    //         });
-
-    //         res.json(order);
-    //     } catch (error) {
-    //         res.status(500).send({ error: error.message });
-    //     }
-    // });
 
     const handleStatusChange = (status) => {
         if (selectedOrderId === null) return;
@@ -322,8 +280,6 @@ function ProvOrders() {
                                     Últimos 2 años
                                 </DateRangePickerItem>
                             </DateRangePicker>
-
-                            
 
 
                         </Grid>
